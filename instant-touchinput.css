@@ -1,7 +1,18 @@
+
+
+
+
+
+/* Don't go here. */
+
 .instant-token-wrapper {
   position : relative;
   margin: 0;
   padding: 0;
+}
+
+.instant-token-box {
+  
 }
 
 .instant-token-input {
