@@ -1,0 +1,90 @@
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>trie</title>
+    <script src="trie.js" type="text/javascript" charset="utf-8"></script>
+    
+    <script type="text/javascript">
+    words = ["Friends", "Fondu", "Family", "Javascript", "French", "Soccer", "Football"];
+    
+    var trie = trie(words);
+    console.log(words);
+    console.log(trie.data);
+    
+    console.log("–––––––––––––––––––––");
+    
+    var s = trie.find("S");
+    console.log("Result 'S': " + s);
+    
+    var j = trie.find("J");
+    console.log("Result 'J': " + j);
+    
+    var ja = trie.find("Ja");
+    console.log("Result 'Ja': " + ja);
+    
+    var f = trie.find("F");
+    console.log("Result 'F': " + f);
+    
+    var fo = trie.find("Fo");
+    console.log("Result 'Fo': " + fo);
+    
+    var fa = trie.find("Fa");
+    console.log("Result 'Fa': " + fa);
+    
+    var foo = trie.find("Foo");
+    console.log("Result 'Foo': " + foo);
+    
+    var foot = trie.find("Foot");
+    console.log("Result 'Foot': " + foot);
+    
+    var fon = trie.find("Fon");
+    console.log("Result 'Fon': " + fon);
+    
+    var fond = trie.find("Fond");
+    console.log("Result 'Fond': " + fond);
+    
+    var fondu = trie.find("Fondu");
+    console.log("Result 'Fondu': " + fondu);
+    
+    var fr = trie.find("Fr");
+    console.log("Result 'Fr': " + fr);
+    
+    var fri = trie.find("Fri");
+    console.log("Result 'Fri': " + fri);
+    
+    var fre = trie.find("Fre");
+    console.log("Result 'Fre': " + fre);
+    
+    var fren = trie.find("Fren");
+    console.log("Result 'Fren': " + fren);
+        
+    var football = trie.find("Football");
+    console.log("Result 'Football': " + football);
+    
+    console.log("–––––––––––––––––––––");
+    
+    var b = trie.find("B");
+    console.log("Result 'B': " + b);
+    
+    var fob = trie.find('Fob');
+    console.log("Result 'Fob': " + fob);
+    
+    var far = trie.find("Far");
+    console.log("Result 'Far': " + far);
+    
+    var fars = trie.find("Fars");
+    console.log("Result 'Fars': " + fars);
+    
+    var footballz = trie.find("Footballz");
+    console.log("Result 'Footballz': " + footballz);
+    
+    var soccerzz = trie.find("Soccerzz");
+    console.log("Result 'Soccerzz': " + soccerzz);
+    
+    </script>
+    
+  </head>
+  <body>
+    
+  </body>
+</html>
