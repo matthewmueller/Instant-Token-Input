@@ -1,3 +1,11 @@
+/*
+  Known Bugs:
+  1. Cannot figure out spaces
+    - Looks like they exist in trie, just not pulling correctly (see French)
+    - Getting some random "F" : "Fa"
+*/
+
+
 var trie = function(words) {
   var data = {};
   var words = words || [];
