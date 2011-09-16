@@ -5,28 +5,68 @@
 
 /* Don't go here. */
 
-.instant-token-wrapper {
+ul.instant-token-list {
+  margin: 0;
+  padding: 2px;
+  width : 300px;
+  border : 1px solid #bebebe;
+  height : 23px;
+  cursor: text;
+}
+
+li.instant-token-item, li.instant-token-input-item {
+  float: left;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  height : 23px;
+  font-family: 'Lucida Grande';
+  font-size: 11px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  line-height: 23px;
+}
+
+li.instant-token-item {
+  background-color: #E8BF6A;
+  border-radius: 10px;
+  padding: 0 7px;
+  font-weight: bold;
+  margin: 0 2px 0 0;
+  height: 21px;
+  line-height: 21px;
+  border: 1px solid #E8BF6A;
+}
+
+div.instant-token-input-wrapper {
   position : relative;
   margin: 0;
   padding: 0;
 }
 
-.instant-token-box {
-  
-}
-
-.instant-token-input {
+input.instant-token-input {
   position:absolute;
   z-index: 5;
   background: transparent;
+  border: none;
+  outline: none;
+  height:23px;
+  margin: 0;
+  padding: 0;
 }
 
-.instant-token-background {
+input.instant-token-background-input {
   position:absolute;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
   z-index:1;
+  height: 23px;
   color: silver;
+  border: none;
+  outline: none;
+  padding:0;
+  margin:0;
 }

@@ -7,27 +7,59 @@
     9 : "TAB"
   };
 
+      
+
+  var initialize = function($input) {
+    // Add style to the input
+    $input.addClass('instant-token-input');
+    $input.attr('maxlength', 20);
+    
+    // Add style and wrap input with <ul> list
+    var $list = $('<ul>').addClass('instant-token-list');
+    $input.wrap($list);
+    $list = $input.parent();
+    
+    // Add style and wrap input with <li> item
+    var $item = $('<li>').addClass('instant-token-input-item');
+    $input.wrap($item);
+    
+    // Add style and wrap input with the wrapper
+    var $wrapper = $('<div>').addClass("instant-token-input-wrapper");
+    $wrapper.width($input.outerWidth());
+    $wrapper.height($input.outerHeight());
+    $input.wrap($wrapper);
+    
+    // Add style and add the background input
+    var $background = $input
+      .clone()
+      .removeClass("instant-token-input")
+      .addClass("instant-token-background-input");
+      
+    $input.after($background);
+    
+    return $list;
+  };
+  
+  var addToken = function(value, $input_item, options) {
+    $item = $("<li>").addClass('instant-token-item').text(value);
+    $input_item.before($item);
+  }
+
   $.fn.instantTokenInput = function (options) {
-    var $input = this;
     var data = options.data || {};
     var idKey = options.idKey || "id";
     var searchKey = options.searchKey || "name";
     
-    this.addClass("instant-token-input");
-
-    // Wrap the element in position-relative DIV
+    // Create required elements
+    var $input = this;
+    $outer = initialize(this);
     
-    $wrapper = $("<div>").addClass("instant-token-wrapper");
-    $wrapper.width(this.outerWidth());
-    $wrapper.height(this.outerHeight());
-    this.wrap($wrapper);
+    // jQuery can be annoying...
+    var $list = $outer;
+    var $input_item = $outer.find(".instant-token-input-item");
+    var $input_wrapper = $outer.find(".instant-token-input-wrapper");
+    var $background = $outer.find(".instant-token-background-input");
 
-    // Add the background DIV
-    $background = this.clone();
-    $background.removeClass("instant-token-input").addClass("instant-token-background");
-    // $background.css(elemStyle)
-    this.after($background);
-  
     var Trie = trie();
     var Index = {};
 
@@ -45,10 +77,13 @@
     
     
     // Bind to input's key event
+    $list.bind("click", function(e) {
+      $input.focus();
+    });
     /*
       Current Issues: 
     */
-    this.bind('keypress', function(e) {
+    $input.bind('keypress', function(e) {
       if (!(e.metaKey || e.ctrlKey)) {
         var key = String.fromCharCode(e.which);
         var query = $input.val() + key;
@@ -59,7 +94,7 @@
           $background.val(query + whatIDontHave);
         }
         else {
-          $background.val($input.val() + key);
+          $background.val("");
         }
       }
     });
@@ -68,7 +103,7 @@
       Goal: Get all keyup's into keydown
       -- BACKSPACE cleans up after selections
     */
-    this.bind('keyup', function(e) {
+    $input.bind('keyup', function(e) {
       var key = keyCodes[e.keyCode];
       if(!key) return;
       
@@ -81,26 +116,36 @@
       }
     });
     
-    this.bind('keydown', function(e) {
+    
+    $input.bind('keydown', function(e) {
       var key = keyCodes[e.keyCode];
       if(!key) return;
-      
+
       switch(key) {
         case "TAB" :
-          e.preventDefault();
-          $input.val($background.val());
-          break;
         case "RETURN" :
         case "RIGHT" :
           e.preventDefault();
-          $input.val($background.val());
+          if ($background.val()) {
+            addToken($background.val(), $input_item, {});
+            $input.val('');
+            $background.val('');
+          }
           break;
           
         case "BACKSPACE" :
-          // Need to get textRange here...
-          $background.val($background.val().slice(0,-1));  
+          if($input.val() === "") {
+            $input_item.prev(".instant-token-item").remove();
+          } else {
+            // Need to get textRange here...
+            $background.val($background.val().slice(0,-1));  
+          }
           break;
-          // $background.val($background.val())
+          
+        case "LEFT" :
+          e.preventDefault();
+          $list.find(".instant-token-item.selected").removeClass().prev()
+          $input_item.prev(".instant-token-item").addClass('.selected');
       }
     });
   
