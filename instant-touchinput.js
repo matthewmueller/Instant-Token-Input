@@ -7,8 +7,6 @@
     9 : "TAB"
   };
 
-      
-
   var initialize = function($input) {
     // Add style to the input
     $input.addClass('instant-token-input');
