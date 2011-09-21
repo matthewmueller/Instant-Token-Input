@@ -7,10 +7,10 @@
 
 ul.instant-token-list {
   margin: 0;
-  padding: 2px;
+  padding: 4px;
   width : 300px;
   border : 1px solid #bebebe;
-  height : 23px;
+  height : 19px;
   cursor: text;
 }
 
@@ -45,18 +45,31 @@ div.instant-token-input-wrapper {
   padding: 0;
 }
 
-input.instant-token-input {
+textarea.instant-token-input {
+  font-family: 'Lucida Grande';
+  font-size: 11px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  line-height: 19px;
   position:absolute;
   z-index: 5;
   background: transparent;
   border: none;
   outline: none;
-  height:23px;
+  height:19px;
   margin: 0;
   padding: 0;
+  resize: none;
 }
 
-input.instant-token-background-input {
+textarea.instant-token-background-input {
+  font-family: 'Lucida Grande';
+  font-size: 11px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  line-height: 19px;
   position:absolute;
   top: 0;
   left: 0;
@@ -69,4 +82,5 @@ input.instant-token-background-input {
   outline: none;
   padding:0;
   margin:0;
+  resize: none;
 }
