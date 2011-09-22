@@ -2,10 +2,10 @@ $(document).ready(function() {
   
   $('#groups').instantTokenInput({
     data : [
-      {thumb : "purple", name : "Finance", id : 1},
-      {thumb : "blue", name : "Friends", id : 3},
-      {thumb : "red", name : "Javascript", id : 4},
-      {thumb : "orange", name : "Soccer", id : 2},      
+      {background : "purple", name : "Finance", id : 1},
+      {background : "blue", name : "Friends", id : 3},
+      {background : "red", name : "Javascript", id : 4},
+      {background : "orange", name : "Soccer", id : 2},      
     ]
   });
   

@@ -21,12 +21,6 @@
     var $item = $('<li>').addClass('instant-token-input-item');
     $input.wrap($item);
     
-    // Add style and wrap input with the wrapper
-    var $wrapper = $('<div>').addClass("instant-token-input-wrapper");
-    $wrapper.width($input.outerWidth());
-    $wrapper.height($input.outerHeight());
-    $input.wrap($wrapper);
-    
     // Add style and add the background input
     var $background = $input
       .clone()
@@ -38,8 +32,10 @@
     return $list;
   };
   
-  var addToken = function(value, $input_item, options) {
-    $item = $("<li>").addClass('instant-token-item').text(value);
+  var addToken = function($background, $input_item, options) {
+    var value = $background.val();
+    var color = $background.data('result')['background'];
+    $item = $("<li>").addClass('instant-token-item').text(value).css("background-color", color);
     $input_item.before($item);
   }
 
@@ -58,6 +54,15 @@
     var $input_wrapper = $outer.find(".instant-token-input-wrapper");
     var $background = $outer.find(".instant-token-background-input");
 
+    $input.add($background).autoGrowInput({
+      maxWidth : 200,
+      minWidth : 0,
+      comfortZone : 20
+    });
+
+    var originalThreshold = threshold = 2;
+    var originalWidth = $input.width();
+
     var Trie = trie();
     var Index = {};
 
@@ -72,8 +77,7 @@
 
     // console.log("Index: ", Index);
     // console.log("Trie: ", Trie.data);
-    
-    
+        
     // Bind to input's key event
     $list.bind("click", function(e) {
       $input.focus();
@@ -88,11 +92,16 @@
         var result = Trie.find(query.toLowerCase());
         
         if(result) {
-          var whatIDontHave = Index[result][searchKey].substr(query.length);
+          var data = Index[result];
+          var whatIDontHave = data[searchKey].substr(query.length);
           $background.val(query + whatIDontHave);
+          $background.trigger("background.change");
+          $background.data('result', data);
         }
         else {
           $background.val("");
+          $background.trigger("background.change");
+          $background.data('result', false);
         }
       }
     });
@@ -114,7 +123,6 @@
       }
     });
     
-    
     $input.bind('keydown', function(e) {
       var key = keyCodes[e.keyCode];
       if(!key) return;
@@ -124,10 +132,15 @@
         case "RETURN" :
         case "RIGHT" :
           e.preventDefault();
+          if(!$input.val()) {
+            submitInput();
+          }
+          
           if ($background.val()) {
-            addToken($background.val(), $input_item, {});
+            addToken($background, $input_item, {});
             $input.val('');
             $background.val('');
+            $background.trigger("background.change");
           }
           break;
           
@@ -136,7 +149,8 @@
             $input_item.prev(".instant-token-item").remove();
           } else {
             // Need to get textRange here...
-            $background.val($background.val().slice(0,-1));  
+            $background.val($background.val().slice(0,-1));
+            $background.trigger("background.change");
           }
           break;
           

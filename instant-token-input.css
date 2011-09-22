@@ -7,11 +7,28 @@
 
 ul.instant-token-list {
   margin: 0;
-  padding: 4px;
   width : 300px;
   border : 1px solid #bebebe;
-  height : 19px;
   cursor: text;
+  zoom: 1;
+  padding: 0;
+}
+
+ul.instant-token-list:before,
+ul.instant-token-list:after {
+  content: "";
+  display: table;
+}
+ul.instant-token-list:after {
+  clear: both;
+}
+
+li.instant-token-input-item {
+  position : relative;
+  margin: 0;
+  padding: 0;
+  width: 50px;
+  height: 27px !important;
 }
 
 li.instant-token-item, li.instant-token-input-item {
@@ -19,30 +36,23 @@ li.instant-token-item, li.instant-token-input-item {
   margin: 0;
   padding: 0;
   list-style-type: none;
-  height : 23px;
+  height : 19px;
   font-family: 'Lucida Grande';
   font-size: 11px;
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  line-height: 23px;
+  line-height: 19px;
 }
 
 li.instant-token-item {
+
   background-color: #E8BF6A;
+  color: white;
   border-radius: 10px;
   padding: 0 7px;
   font-weight: bold;
-  margin: 0 2px 0 0;
-  height: 21px;
-  line-height: 21px;
-  border: 1px solid #E8BF6A;
-}
-
-div.instant-token-input-wrapper {
-  position : relative;
-  margin: 0;
-  padding: 0;
+  margin: 4px 2px;
 }
 
 textarea.instant-token-input {
@@ -51,21 +61,25 @@ textarea.instant-token-input {
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
-  line-height: 19px;
   position:absolute;
   z-index: 5;
   background: transparent;
   border: none;
   outline: none;
   height:19px;
-  margin: 0;
+  line-height: 19px;
+  width: 25px;
+  overflow:hidden;
+  margin: 4px 0;
   padding: 0;
   resize: none;
+  border:1px solid red;
 }
 
 textarea.instant-token-background-input {
   font-family: 'Lucida Grande';
   font-size: 11px;
+  width: 25px;
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
@@ -76,11 +90,13 @@ textarea.instant-token-background-input {
   bottom: 0;
   right: 0;
   z-index:1;
-  height: 23px;
+  height: 19px;
   color: silver;
   border: none;
   outline: none;
   padding:0;
-  margin:0;
+  margin: 4px 0;
   resize: none;
+  border:1px solid red;
+  overflow-y: hidden;
 }
