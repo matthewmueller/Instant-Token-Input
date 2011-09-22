@@ -10,10 +10,13 @@ ul.instant-token-list {
   width : 300px;
   border : 1px solid #bebebe;
   cursor: text;
-  zoom: 1;
+  zoom: 1; /* Clearfix */
   padding: 0;
+  overflow-x: hidden; /* Hides the autocomplete text when it goes out of the box -- not ideal */
+  
 }
 
+/* Clearfix */
 ul.instant-token-list:before,
 ul.instant-token-list:after {
   content: "";
@@ -23,80 +26,53 @@ ul.instant-token-list:after {
   clear: both;
 }
 
-li.instant-token-input-item {
-  position : relative;
-  margin: 0;
-  padding: 0;
-  width: 50px;
-  height: 27px !important;
+.instant-token-item.selected {
+  background-color: aliceblue !important;
 }
 
-li.instant-token-item, li.instant-token-input-item {
-  float: left;
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-  height : 19px;
-  font-family: 'Lucida Grande';
-  font-size: 11px;
-  font-style: normal;
-  font-variant: normal;
-  font-weight: normal;
-  line-height: 19px;
-}
-
-li.instant-token-item {
-
-  background-color: #E8BF6A;
-  color: white;
-  border-radius: 10px;
-  padding: 0 7px;
-  font-weight: bold;
+/* items including input item*/
+.instant-token-list li {
   margin: 4px 2px;
+  float: left;
+  list-style-type: none;
 }
 
-textarea.instant-token-input {
+.instant-token-item {
+  padding: 0 7px;
   font-family: 'Lucida Grande';
   font-size: 11px;
-  font-style: normal;
-  font-variant: normal;
-  font-weight: normal;
-  position:absolute;
-  z-index: 5;
-  background: transparent;
-  border: none;
-  outline: none;
-  height:19px;
-  line-height: 19px;
-  width: 25px;
-  overflow:hidden;
-  margin: 4px 0;
+  line-height: 18px;
+  color: white;
+  border-radius: 7px;
+}
+
+.instant-token-item-input {
   padding: 0;
-  resize: none;
-  border:1px solid red;
+  position:relative;
 }
 
-textarea.instant-token-background-input {
-  font-family: 'Lucida Grande';
-  font-size: 11px;
-  width: 25px;
-  font-style: normal;
-  font-variant: normal;
-  font-weight: normal;
-  line-height: 19px;
-  position:absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  z-index:1;
-  height: 19px;
-  color: silver;
-  border: none;
-  outline: none;
-  padding:0;
-  margin: 4px 0;
+.instant-token-list textarea {
+  padding: 0;
+  width: 20px;
+  height: 18px;
+  border:none;
+  outline:none;
   resize: none;
-  border:1px solid red;
-  overflow-y: hidden;
+  line-height: 18px;
+  background: transparent;
+  overflow-y:hidden;
+}
+
+.instant-token-input {
+/*    border: 1px solid #e3e3e3;*/
+    position: relative;
+    z-index: 1;
+}
+
+.instant-token-background-input {
+  position:absolute;
+  top:0;
+  left:0;
+/*  border:1px solid red;*/
+  color: #ececec;
 }
