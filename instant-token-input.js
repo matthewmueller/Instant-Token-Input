@@ -91,78 +91,79 @@
       API: 
         submit, select, delete, complete, clear
     */
-    var API = {
-      submit : function() {},
-      
-      select : function(left) {
-        var len = tokens.length;
-        // One token is already selected
-        if(selected >= 0) {
-          $(tokens[selected]).removeClass('selected');
-          
-          // Left
-          if(left) {
-            selected--;
-            selected = (selected > -1) ? selected : 0;
-            tokens[selected].addClass('selected');
-          } else {
-            selected++;
-            if (selected < len) {
-              tokens[selected].addClass('selected');
-            } else if (selected === len) {
-              $input.focus();
-              selected = -1;
-            }
+    var API = {      
+      selectLeft : function() {
+        $item = $list.find('.selected');
+        if($item.length) {
+          $prev = $item.prev('li');
+          if($prev.length) {
+            $item.removeClass('selected');
+            $prev.addClass('selected');
           }
         } else {
-          // Left
-          if(left) {
-            selected = len - 1;
-            $(tokens[selected]).addClass('selected');
+          $prev = $inputItem.prev('li');
+          $prev.addClass('selected');
+        }
+      },
+      
+      selectRight : function() {
+        $item = $list.find('.selected');
+        if($item.length) {
+          $next = $item.next('li');
+          if($next) {
+            if($next.hasClass('instant-token-item-input')) {
+              $item.removeClass("selected");
+            } else {
+              $item.removeClass('selected');
+              $next.addClass('selected');
+            }
           }
         }
-                
       },
       
       del : function() {
-        var key = tokens[selected].text()
-        var obj = JSON.parse($hidden.val());
-        delete obj[key];
-        $hidden.val(JSON.stringify(obj));
+        var toDelete = $list.find('.selected');
+        API.selectLeft();
+        toDelete.remove();
         
-        tokens[selected].remove();
-        tokens.splice(selected, 1);
-        if(selected === tokens.length) {
-          API.select(false);
-          selected = -1;
-        } else if(selected > 0) {
-          API.select(true);
-        } else {
-          selected = -1;
-        }
+        API.updateHiddenInput();
       },
       
       complete : function() {
         var value = $background.val();
         var color = $background.data('result')['background'];
         var id = $background.data('result')['id'];
-        
-        $item = $("<li>").addClass('instant-token-item').text(value).css("background-color", color);
+
+        $item = $("<li>").addClass('instant-token-item').text(value).css("background-color", color).data('tokenID', id);
         tokens.push($item);
         
-        obj = JSON.parse($hidden.val());
-        obj[value] = id;
-        $hidden.val(JSON.stringify(obj));
         
         $inputItem.before($item);
         $input.val('');
         $background.val('');
         $background.trigger("background.change");
+        
+        API.updateHiddenInput();
       },
       
       clear : function() {
         $background.val('');
         $background.trigger("background.change");
+      },
+      
+      updateHiddenInput : function() {
+        var out = {};
+        $list.find('.instant-token-item').not('.instant-token-item-input').each(function() {
+          var key = $(this).text();
+          var id = $(this).data('tokenID');
+          out[key] = id;
+        });
+        
+        if(JSON) {
+          var value = JSON.stringify(out);
+          $hidden.val(value);
+        }
+        
       },
       
       noop : function() {}
@@ -175,8 +176,8 @@
     state = {
       initial : {
         'RIGHT' : ['noop'],
-        'LEFT' : ['select', true],
-        'BACKSPACE' : ['select', true]
+        'LEFT' : ['selectLeft'],
+        'BACKSPACE' : ['selectLeft']
       },
 
       suggested : {
@@ -188,10 +189,10 @@
       },
 
       selected : {
-        'RIGHT' : ['select', false],
-        'LEFT' : ['select', true],
+        'RIGHT' : ['selectRight'],
+        'LEFT' : ['selectLeft'],
         'BACKSPACE' : ['del'],
-        'TAB' : ['select', false]
+        'TAB' : ['selectRight']
       }
 
     }
@@ -233,13 +234,11 @@
         }
         
         if(!$input.val()) {
-          if(selected < 0) {
-            setState('initial').respond(e);            
-          } else {
+          if($list.find('.selected').length) {
             setState('selected').respond(e);
-          }
-          // Perhaps an if selected here...
-          
+          } else {
+            setState('initial').respond(e);
+          }          
         } else if ($background.val()) {
           setState('suggested').respond(e);
         }
