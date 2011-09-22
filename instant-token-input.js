@@ -31,13 +31,13 @@
     // Set options and defaults
     var o = $.extend({
       data : {},
-      width: "300px"
+      width: 300
     }, o);
 
     // Modify DOM
     var $list = $("<ul>")
       .addClass('instant-token-list')
-      .css('width', o.width);
+      .width(o.width);
           
     var $inputItem = $("<li>")
       .addClass('instant-token-item instant-token-item-input');
@@ -58,8 +58,8 @@
       .attr("maxlength", 20)
       .wrap($list)
       .wrap($inputItem)
-      .after($background)
-      .after($hidden);
+      .after($hidden)
+      .after($background);
     
     // Wrap doesn't keep variables
     $inputItem = $input.parent('.instant-token-item-input');
