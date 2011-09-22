@@ -31,13 +31,13 @@
     // Set options and defaults
     var o = $.extend({
       data : {},
-      width: 300
+      width: "300px"
     }, o);
-        
+
     // Modify DOM
     var $list = $("<ul>")
       .addClass('instant-token-list')
-      .width(o.width);
+      .css('width', o.width);
           
     var $inputItem = $("<li>")
       .addClass('instant-token-item instant-token-item-input');
@@ -47,13 +47,19 @@
       .removeClass('instant-token-input')
       .removeAttr('id')
       .addClass('instant-token-background-input');
+      
+    var $hidden = $('<input>')
+      .attr('type', 'hidden')
+      .val('{}')
+      .attr('name', $input.attr('id'))
 
     $input
       .addClass('instant-token-input')
       .attr("maxlength", 20)
       .wrap($list)
       .wrap($inputItem)
-      .after($background);
+      .after($background)
+      .after($hidden);
     
     // Wrap doesn't keep variables
     $inputItem = $input.parent('.instant-token-item-input');
@@ -119,6 +125,11 @@
       },
       
       del : function() {
+        var key = tokens[selected].text()
+        var obj = JSON.parse($hidden.val());
+        delete obj[key];
+        $hidden.val(JSON.stringify(obj));
+        
         tokens[selected].remove();
         tokens.splice(selected, 1);
         if(selected === tokens.length) {
@@ -134,8 +145,14 @@
       complete : function() {
         var value = $background.val();
         var color = $background.data('result')['background'];
+        var id = $background.data('result')['id'];
+        
         $item = $("<li>").addClass('instant-token-item').text(value).css("background-color", color);
         tokens.push($item);
+        
+        obj = JSON.parse($hidden.val());
+        obj[value] = id;
+        $hidden.val(JSON.stringify(obj));
         
         $inputItem.before($item);
         $input.val('');

@@ -27,7 +27,7 @@ ul.instant-token-list:after {
 }
 
 .instant-token-item.selected {
-  background-color: aliceblue !important;
+  background-color: #51b3ff !important;
 }
 
 /* items including input item*/
@@ -44,6 +44,7 @@ ul.instant-token-list:after {
   line-height: 18px;
   color: white;
   border-radius: 7px;
+  cursor: pointer;
 }
 
 .instant-token-item-input {
@@ -55,6 +56,8 @@ ul.instant-token-list:after {
   padding: 0;
   width: 20px;
   height: 18px;
+  font-family: 'Lucida Grande';
+  font-size: 11px;
   border:none;
   outline:none;
   resize: none;

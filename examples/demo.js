@@ -1,6 +1,7 @@
 $(document).ready(function() {
   
   $('#groups').instantTokenInput({
+    width: "100%",
     data : [
       {background : "purple", name : "Finance", id : 1},
       {background : "blue", name : "Friends", id : 3},
