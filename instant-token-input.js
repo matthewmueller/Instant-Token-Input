@@ -79,6 +79,7 @@
       .add($input)
       .add($background)
       .autoGrowInput({
+        minWidth: 20,
         comfortZone : 20
       });
     
@@ -151,6 +152,7 @@
         $input.width('');
         $background.val('');
         $input.removeAttr('placeholder');
+        $input.width(20);
         $background.trigger("background.change");
         
         API.updateHiddenInput();
