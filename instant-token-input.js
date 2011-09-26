@@ -79,7 +79,6 @@
       .add($input)
       .add($background)
       .autoGrowInput({
-        maxWidth : o.width,
         minWidth : 50,
         comfortZone : 20
       });
