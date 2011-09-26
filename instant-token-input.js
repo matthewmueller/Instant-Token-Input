@@ -69,6 +69,8 @@
       .after($hidden)
       .after($background);
     
+    var placeholder = $input.attr('placeholder');
+    
     // Wrap doesn't keep variables
     $inputItem = $input.parent('.instant-token-item-input');
     $list = $inputItem.parent('.instant-token-list');
@@ -146,7 +148,9 @@
         
         $inputItem.before($item);
         $input.val('');
+        $input.width('');
         $background.val('');
+        $input.removeAttr('placeholder');
         $background.trigger("background.change");
         
         API.updateHiddenInput();
@@ -283,6 +287,14 @@
     // Allow any part of the <ul> to focus on the textarea
     $list.bind("click", function(e) {
       $input.focus();
+    });
+    
+    $input.bind('blur', function(e) {
+      var items = $list.find('.instant-token-item').not('.instant-token-item-input');
+      
+      if($input.val() === '' && items.length === 0) {
+        $input.attr('placeholder', placeholder);
+      }
     });
     
   };
