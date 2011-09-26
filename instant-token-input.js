@@ -72,9 +72,7 @@
     // Wrap doesn't keep variables
     $inputItem = $input.parent('.instant-token-item-input');
     $list = $inputItem.parent('.instant-token-list');
-    
-    console.log($list.outerWidth());
-    
+        
     $(null)
       .add($input)
       .add($background)
