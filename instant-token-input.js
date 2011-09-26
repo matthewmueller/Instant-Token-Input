@@ -27,7 +27,8 @@
 
   
   $.fn.instantTokenInput = function(o) {
-    var $input = this;
+    $input = this
+
     // Set options and defaults
     var o = $.extend({
       data : {},
@@ -40,9 +41,12 @@
     }
 
     // Modify DOM
+    var $wrapper = $("<div>")
+      .attr("id", $input.attr('id'))
+      .addClass($input.attr('class'))
+    
     var $list = $("<ul>")
       .addClass('instant-token-list')
-      .attr('id', $input.attr('id'))
       .css('width', o.width);
           
     var $inputItem = $("<li>")
@@ -58,17 +62,19 @@
     var $hidden = $('<input>')
       .attr('type', 'hidden')
       .val('{}')
+      .addClass("instant-token-hidden")
       .attr('name', $input.attr('id'))
 
     $input
       .addClass('instant-token-input')
       .attr("maxlength", 20)
       .removeAttr('id')
+      .wrap($wrapper)
       .wrap($list)
       .wrap($inputItem)
       .after($hidden)
       .after($background);
-    
+        
     var placeholder = $input.attr('placeholder');
     
     // Wrap doesn't keep variables
