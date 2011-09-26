@@ -52,7 +52,7 @@ ul.instant-token-list:after {
   position:relative;
 }
 
-.instant-token-list textarea {
+.instant-token-list textarea, .instant-token-list input {
   padding: 0;
   width: 20px;
   height: 18px;
@@ -61,7 +61,6 @@ ul.instant-token-list:after {
   border:none;
   outline:none;
   resize: none;
-  line-height: 18px;
   background: transparent;
   overflow-y:hidden;
 }

@@ -34,10 +34,16 @@
       width: 300
     }, o);
 
+    // If a number is passed through, convert it to px
+    if(typeof o.width === "number") {
+      o.width += 'px'
+    }
+
     // Modify DOM
     var $list = $("<ul>")
       .addClass('instant-token-list')
-      .width(o.width);
+      .attr('id', $input.attr('id'))
+      .css('width', o.width);
           
     var $inputItem = $("<li>")
       .addClass('instant-token-item instant-token-item-input');
@@ -46,6 +52,7 @@
       .clone()
       .removeClass('instant-token-input')
       .removeAttr('id')
+      .removeAttr('placeholder')
       .addClass('instant-token-background-input');
       
     var $hidden = $('<input>')
@@ -56,6 +63,7 @@
     $input
       .addClass('instant-token-input')
       .attr("maxlength", 20)
+      .removeAttr('id')
       .wrap($list)
       .wrap($inputItem)
       .after($hidden)
@@ -65,12 +73,14 @@
     $inputItem = $input.parent('.instant-token-item-input');
     $list = $inputItem.parent('.instant-token-list');
     
+    console.log($list.outerWidth());
+    
     $(null)
       .add($input)
       .add($background)
       .autoGrowInput({
         maxWidth : o.width,
-        minWidth : 0,
+        minWidth : 50,
         comfortZone : 20
       });
     
@@ -78,7 +88,7 @@
     // Build data trie and index
     var Trie = trie();
     var Index = {};
-    
+
     var d, key;
     for(var i = 0, len = o.data.length; i < len; i++) {
       d = o.data[i];
