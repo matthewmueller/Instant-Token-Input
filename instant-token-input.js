@@ -35,19 +35,11 @@
   };
 
   
-  $.fn.instantTokenInput = function(o) {
-    $input = this;
+  $.fn.instantTokenInput = function(data, format) {
+    data = data || {};
+    format = format || function() {};
 
-    // Set options and defaults
-    o = $.extend({
-      data : {},
-      format : function() {}
-    }, o);
-
-    // If a number is passed through, convert it to px
-    if(typeof o.width === "number") {
-      o.width += 'px';
-    }
+    var $input = this;
 
     // Modify DOM
     var $wrapper = $("<div>")
@@ -103,8 +95,8 @@
     var Index = {};
 
     var d, key;
-    for(var i = 0, len = o.data.length; i < len; i++) {
-      d = o.data[i];
+    for(var i = 0, len = data.length; i < len; i++) {
+      d = data[i];
       key = d["name"].toLowerCase();
       Index[key] = d;
       Trie.add(key);
@@ -165,7 +157,7 @@
                   .addClass('instant-token-item')
                   .text(value);
 
-        o.format($background.data('result'), $item);
+        format($background.data('result'), $item);
         
         tokens.push($item);
         
