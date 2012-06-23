@@ -1,19 +1,12 @@
-
-
-
-
-
 /* Don't go here. */
-
 ul.instant-token-list {
   margin: 0;
-  width : 300px;
+  width : 100%;
   border : 1px solid #bebebe;
   cursor: text;
   zoom: 1; /* Clearfix */
   padding: 0;
   overflow-x: hidden; /* Hides the autocomplete text when it goes out of the box -- not ideal */
-  
 }
 
 /* Clearfix */
@@ -66,15 +59,15 @@ ul.instant-token-list:after {
 }
 
 .instant-token-input {
-/*    border: 1px solid #e3e3e3;*/
+    margin:0;
     position: relative;
     z-index: 1;
 }
 
 .instant-token-background-input {
+  margin:0;
   position:absolute;
   top:0;
   left:0;
-/*  border:1px solid red;*/
   color: #d7d7d7;
 }

@@ -1,3 +1,12 @@
+/*
+  TODO:
+
+  * Merge dependencencies
+  * Place in another closure with module.exports support
+    and var $ = jQuery || require('jquery');
+
+*/
+
 (function($){
   // Keycodes
   var keyCodes = {
@@ -23,34 +32,33 @@
     } else {
       return false;
     }
-  }
+  };
 
   
   $.fn.instantTokenInput = function(o) {
-    $input = this
+    $input = this;
 
     // Set options and defaults
-    var o = $.extend({
+    o = $.extend({
       data : {},
-      width: 300
+      format : function() {}
     }, o);
 
     // If a number is passed through, convert it to px
     if(typeof o.width === "number") {
-      o.width += 'px'
+      o.width += 'px';
     }
 
     // Modify DOM
     var $wrapper = $("<div>")
       .attr("id", $input.attr('id'))
-      .addClass($input.attr('class'))
+      .addClass($input.attr('class'));
     
     var $list = $("<ul>")
-      .addClass('instant-token-list')
-      .css('width', o.width);
+      .addClass('instant-token-list');
           
     var $inputItem = $("<li>")
-      .addClass('instant-token-item instant-token-item-input');
+      .addClass('instant-token-item-input');
 
     var $background = $input
       .clone()
@@ -63,7 +71,7 @@
       .attr('type', 'hidden')
       .val('{}')
       .addClass("instant-token-hidden")
-      .attr('name', $input.attr('id'))
+      .attr('name', $input.attr('id'));
 
     $input
       .addClass('instant-token-input')
@@ -103,10 +111,10 @@
     }
     
     /*
-      API: 
+      API:
         submit, select, delete, complete, clear
     */
-    var API = {      
+    var API = {
       selectLeft : function() {
         $item = $list.find('.selected');
         if($item.length) {
@@ -114,10 +122,15 @@
           if($prev.length) {
             $item.removeClass('selected');
             $prev.addClass('selected');
+          } else {
+            $input.show();
           }
         } else {
           $prev = $inputItem.prev('li');
-          $prev.addClass('selected');
+          if($prev.length) {
+            $prev.addClass('selected');
+            $input.hide();
+          }
         }
       },
       
@@ -128,6 +141,7 @@
           if($next) {
             if($next.hasClass('instant-token-item-input')) {
               $item.removeClass("selected");
+              $input.show();
             } else {
               $item.removeClass('selected');
               $next.addClass('selected');
@@ -146,12 +160,14 @@
       
       complete : function() {
         var value = $background.val();
-        var color = $background.data('result')['background'];
-        var id = $background.data('result')['id'];
 
-        $item = $("<li>").addClass('instant-token-item').text(value).css("background-color", color).data('tokenID', id);
-        tokens.push($item);
+        $item = $("<li>")
+                  .addClass('instant-token-item')
+                  .text(value);
+
+        o.format($background.data('result'), $item);
         
+        tokens.push($item);
         
         $inputItem.before($item);
         $input.val('');
@@ -159,14 +175,12 @@
         $background.val('');
         $input.removeAttr('placeholder');
         $input.width(20);
-        $background.trigger("background.change");
         
         API.updateHiddenInput();
       },
       
       clear : function() {
         $background.val('');
-        $background.trigger("background.change");
       },
       
       updateHiddenInput : function() {
@@ -190,7 +204,7 @@
 
     /*
       Actions
-    */     
+    */
     state = {
       initial : {
         'RIGHT' : ['noop'],
@@ -213,8 +227,7 @@
         'TAB' : ['selectRight']
       }
 
-    }
-
+    };
   
     var setState = function(s) {
       var commands = state[s],
@@ -256,7 +269,7 @@
             setState('selected').respond(e);
           } else {
             setState('initial').respond(e);
-          }          
+          }
         } else if ($background.val()) {
           setState('suggested').respond(e);
         }
@@ -282,21 +295,24 @@
           var whatIDontHave = data['name'].substr(query.length);
           $background.val(query + whatIDontHave);
           $background.data('result', data);
-          $background.trigger("background.change");
         }
         else {
           $background.val("");
           $background.data('result', false);
-          $background.trigger("background.change");
         }
       }
     });
     
     // Allow any part of the <ul> to focus on the textarea
     $list.bind("click", function(e) {
+      if($(e.target).hasClass('instant-token-item')) {
+        $(e.target).addClass('selected');
+      }
+
       $input.focus();
     });
-    
+
+
     $input.bind('blur', function(e) {
       var items = $list.find('.instant-token-item').not('.instant-token-item-input');
       
@@ -310,143 +326,3 @@
   
   
 })(jQuery);
-// 
-//   var initialize = function($input) {
-//     // Add style to the input
-//     $input.addClass('instant-token-input');
-//     $input.attr('maxlength', 20);
-//     
-//     // Add style and wrap input with <ul> list
-//     var $list = $('<ul>').addClass('instant-token-list');
-//     $input.wrap($list);
-//     $list = $input.parent();
-//     
-//     // Add style and wrap input with <li> item
-//     var $item = $('<li>').addClass('instant-token-input-item');
-//     $input.wrap($item);
-//     
-//     // Add style and add the background input
-//     var $background = $input
-//       .clone()
-//       .removeClass("instant-token-input")
-//       .addClass("instant-token-background-input");
-//       
-//     $input.after($background);
-//     
-//     return $list;
-//   };
-//   
-//   var addToken = function($background, $input_item, options) {
-//     var value = $background.val();
-//     var color = $background.data('result')['background'];
-//     $item = $("<li>").addClass('instant-token-item').text(value).css("background-color", color);
-//     $input_item.before($item);
-//   }
-// 
-//   $.fn.instantTokenInput = function (options) {
-//     var data = options.data || {};
-//     var idKey = options.idKey || "id";
-//     var searchKey = options.searchKey || "name";
-//     
-//     // Create required elements
-//     var $input = this;
-//     $outer = initialize(this);
-//     
-//     // jQuery can be annoying...
-//     var $list = $outer;
-//     var $input_item = $outer.find(".instant-token-input-item");
-//     var $input_wrapper = $outer.find(".instant-token-input-wrapper");
-//     var $background = $outer.find(".instant-token-background-input");
-// 
-//     $input.add($background).autoGrowInput({
-//       maxWidth : 200,
-//       minWidth : 0,
-//       comfortZone : 20
-//     });
-// 
-//     var originalThreshold = threshold = 2;
-//     var originalWidth = $input.width();
-// 
-//     var Trie = trie();
-//     var Index = {};
-// 
-//     var d, key;
-//     for(var i = 0, len = data.length; i < len; i++) {
-//       d = data[i];
-//       key = d[searchKey].toLowerCase();
-//       Index[key] = d;
-//       Trie.add(key);
-//     }
-// 
-// 
-//     // console.log("Index: ", Index);
-//     // console.log("Trie: ", Trie.data);
-//         
-//     // Bind to input's key event
-//     $list.bind("click", function(e) {
-//       $input.focus();
-//     });
-//     /*
-//       Current Issues: 
-//     */
-// 
-//     
-//     /*
-//       Goal: Get all keyup's into keydown
-//       -- BACKSPACE cleans up after selections
-//     */
-//     $input.bind('keyup', function(e) {
-//       var key = keyCodes[e.keyCode];
-//       if(!key) return;
-//       
-//       switch(key) {
-//         case "BACKSPACE" :
-//           if($input.val().length != $background.val().length) {
-//             $background.val($input.val());
-//           }
-//           break;
-//       }
-//     });
-//     
-//     $input.bind('keydown', function(e) {
-//       var key = keyCodes[e.keyCode];
-//       if(!key) return;
-// 
-//       switch(key) {
-//         case "TAB" :
-//         case "RETURN" :
-//         case "RIGHT" :
-//           e.preventDefault();
-//           if(!$input.val()) {
-//             submitInput();
-//           }
-//           
-//           if ($background.val()) {
-//             addToken($background, $input_item, {});
-//             $input.val('');
-//             $background.val('');
-//             $background.trigger("background.change");
-//           }
-//           break;
-//           
-//         case "BACKSPACE" :
-//           if($input.val() === "") {
-//             $input_item.prev(".instant-token-item").remove();
-//           } else {
-//             // Need to get textRange here...
-//             $background.val($background.val().slice(0,-1));
-//             $background.trigger("background.change");
-//           }
-//           break;
-//           
-//         case "LEFT" :
-//           e.preventDefault();
-//           $list.find(".instant-token-item.selected").removeClass().prev()
-//           $input_item.prev(".instant-token-item").addClass('.selected');
-//       }
-//     });
-//   
-//   }
-// 
-// 
-// })(jQuery);
